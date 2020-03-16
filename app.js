@@ -7,8 +7,13 @@ const email = require('./config/configEmail');
 var app = express();
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.json());
 
 // Rotas
+app.get('/teste', (req, res) => {
+    return res.json({ message: "ok" });
+});
+
 app.post('/recuperasenha', (req, res) => {
     const nome = req.body['usuario'];
     const senha = req.body['senha'];
@@ -39,7 +44,7 @@ app.post('/enviarelatorio', (req, res) => {
     const assuntoEmail = req.body['assunto'];
     const corpoEmail = req.body['corpo'];
 
-    if (destinatarios && assuntoEmail && corpoEmail) { 
+    if (destinatarios && assuntoEmail && corpoEmail) {
 
         sendMail.send(destinatarios, assuntoEmail, corpoEmail)
             .then(
@@ -58,7 +63,7 @@ app.post('/enviarelatorio', (req, res) => {
 });
 
 // Start
-app.listen(8000, function () {
+app.listen(process.env.PORT || 8000, function () {
     console.log('Servidor rodando na porta 8000.');
 });
 
